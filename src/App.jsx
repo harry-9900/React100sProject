@@ -3,7 +3,7 @@ import React from 'react'
 export default function App() {
   return (
     <div>
-      hi
+      <h1>hi</h1>
     </div>
   )
 }
