@@ -1,5 +1,5 @@
 
-import Logic from './LogicBuild100/L55';
+import Logic from './LogicBuild100/L75';
 
 export default function App() {
   return (
