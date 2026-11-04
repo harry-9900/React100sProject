@@ -2,7 +2,7 @@ import React from 'react'
 
 const L3 = () => {
 
-    const number = [10, 20, 30];
+    let numbers = [10, 20, 30];
 
     function maxnumber(numbers) {
     let maxv = numbers[0];
