@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const NumberGuessingGame = () => {
   // গেমের মোড/ডিফিকাল্টি সেটিংস
@@ -9,11 +9,13 @@ const NumberGuessingGame = () => {
   };
 
   const [difficulty, setDifficulty] = useState('medium');
-  const [targetNumber, setTargetNumber] = useState(1);
+  const [targetNumber, setTargetNumber] = useState(() =>
+    Math.floor(Math.random() * modes.medium.max) + 1
+  );
   const [guess, setGuess] = useState('');
   const [attemptsLeft, setAttemptsLeft] = useState(modes.medium.attempts);
   const [attemptsUsed, setAttemptsUsed] = useState(0);
-  const [message, setMessage] = useState({ text: '', type: '' });
+  const [message, setMessage] = useState({ text: 'একটি সংখ্যা অনুমান করুন!', type: 'info' });
   const [gameState, setGameState] = useState('playing'); // playing, won, lost
   const [guessHistory, setGuessHistory] = useState([]);
   const [highScore, setHighScore] = useState(() => {
@@ -32,10 +34,6 @@ const NumberGuessingGame = () => {
     setGameState('playing');
     setGuessHistory([]);
   };
-
-  useEffect(() => {
-    startNewGame(difficulty);
-  }, [difficulty]);
 
   // সাবমিট হ্যান্ডলার
   const handleGuess = (e) => {
@@ -58,14 +56,7 @@ const NumberGuessingGame = () => {
     setAttemptsLeft(newAttemptsLeft);
     setAttemptsUsed(newAttemptsUsed);
 
-    let status = '';
-    if (numGuess < targetNumber) {
-      status = 'ছোট';
-    } else if (numGuess > targetNumber) {
-      status = 'বড়';
-    } else {
-      status = 'সঠিক';
-    }
+    const status = numGuess < targetNumber ? 'ছোট' : numGuess > targetNumber ? 'বড়' : 'সঠিক';
 
     setGuessHistory([{ num: numGuess, status }, ...guessHistory]);
 
@@ -107,7 +98,10 @@ const NumberGuessingGame = () => {
           {Object.keys(modes).map((key) => (
             <button
               key={key}
-              onClick={() => setDifficulty(key)}
+              onClick={() => {
+                setDifficulty(key);
+                startNewGame(key);
+              }}
               className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all ${
                 difficulty === key
                   ? 'bg-emerald-500 text-slate-950 font-bold'
